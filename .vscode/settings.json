@@ -1,0 +1,12 @@
+{
+  "python.pythonPath": "/Users/michael/Code/code_count/.venv/bin/python3",
+  "python.analysis.typeCheckingMode": "off",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    ".venv": true
+  }
+}
