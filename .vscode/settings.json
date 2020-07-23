@@ -8,5 +8,10 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     ".venv": true
+  },
+  "[makefile]": {
+    "editor.insertSpaces": false,
+    "editor.renderWhitespace": "all",
+    "editor.renderControlCharacters": true
   }
 }

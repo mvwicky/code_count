@@ -1,3 +1,5 @@
 *.html
 .cache/
 .envrc
+.tmp/
+out/

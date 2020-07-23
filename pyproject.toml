@@ -3,6 +3,7 @@ name = "code_count"
 version = "0.1.0"
 description = ""
 authors = ["Michael Van Wickle <mvanwickle@gmail.com>"]
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -15,6 +16,10 @@ matplotlib = "^3.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.4.2"
+
+[tool.isort]
+profile = "black"
+no_lines_before = ["LOCALFOLDER"]
 
 [tool.poetry.scripts]
 ccount = "code_count.__main__:main"
