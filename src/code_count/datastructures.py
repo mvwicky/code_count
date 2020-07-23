@@ -30,13 +30,13 @@ class Counts(NamedTuple):
     counts: List[Count]
     version: str = SCHEMA_VERSION
 
-    def by_lang(self, file_types: Sequence[str]) -> Dict[str, List[LangDataPoint]]:
-        lang_stats = {ft: [] for ft in file_types}
+    def by_lang(self, languages: Sequence[str]) -> Dict[str, List[LangDataPoint]]:
+        lang_stats = {lang: [] for lang in languages}
         for count in self.counts:
-            for ft in file_types:
-                lang = lang_stats[ft]
+            for lang in languages:
+                stats = lang_stats[lang]
                 kw = {"commit": count.commit}
-                if ft in count.counts:
-                    kw["code"] = count.counts[ft].code
-                lang.append(LangDataPoint(**kw))
+                if lang in count.counts:
+                    kw["code"] = count.counts[lang].code
+                stats.append(LangDataPoint(**kw))
         return lang_stats

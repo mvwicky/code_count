@@ -32,12 +32,12 @@ class Plotter(object):
             tools=TOOLS,
         )
 
-    def plot_lang(self, fig: Figure, file_type: str, source: ColumnDataSource):
+    def plot_lang(self, fig: Figure, lang: str, source: ColumnDataSource):
         col = next(COLORS)
         common_kw = {
             "line_color": col,
             "source": source,
-            "legend_label": f"{file_type} Code Count",
+            "legend_label": f"{lang} Code Count",
         }
         fig.circle("x", "y", fill_color="white", size=8, **common_kw)
         fig.line("x", "y", line_width=2, **common_kw)
@@ -50,7 +50,7 @@ class Plotter(object):
             mode="relative",
         )
         p = self.create_figure()
-        for ft, lang_counts in counts.items():
+        for lang, lang_counts in counts.items():
             non_zero = [elem for elem in lang_counts if elem.code > 0]
             refs = lmap(op.attrgetter("commit.ref"), non_zero)
             subjects = lmap(op.attrgetter("commit.subject"), non_zero)
@@ -67,7 +67,7 @@ class Plotter(object):
                 "subject": subjects,
             }
             source = ColumnDataSource(data=data)
-            self.plot_lang(p, ft, source)
+            self.plot_lang(p, lang, source)
         p.legend.location = "top_left"
         p.hover.tooltips = [
             ("Index", "$index"),

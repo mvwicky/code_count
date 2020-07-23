@@ -1,3 +1,5 @@
+from typing import cast
+
 from marshmallow import EXCLUDE, Schema, fields, post_load
 
 from .const import SCHEMA_VERSION
@@ -25,6 +27,10 @@ class CommitSchema(Schema):
     @post_load
     def _make(self, data, **kwargs):
         return Commit(**data)
+
+    def load_commit(self, data, **kwargs) -> Commit:
+        comm = self.load(data, **kwargs)
+        return cast(Commit, comm)
 
 
 class CountSchema(Schema):

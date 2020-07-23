@@ -5,8 +5,15 @@ from typing import ClassVar
 
 import attr
 
+ENCODING = "utf-8"
+ERRORS = "strict"
+
 
 class AbstractCompressionFormat(abc.ABC):
+    @property
+    def name(self) -> str:
+        return type(self).__name__.replace("CompressionFormat", "")
+
     @abc.abstractmethod
     def compress(self, data: bytes) -> bytes:
         ...
@@ -35,15 +42,27 @@ class NoopCompression(AbstractCompressionFormat):
         return data
 
 
-@attr.s(auto_attribs=True, slots=True)
+@attr.s(auto_attribs=True, slots=True, repr=False)
 class BaseCompressedFile(object):
     fmt: ClassVar[AbstractCompressionFormat] = NoopCompression()
     _path: Path
 
-    def read_text(self, encoding: str = None, errors: str = None) -> str:
+    def __repr__(self) -> str:
+        fmt_name = self.fmt.name
+        return f"{fmt_name}({self._path})"
+
+    def __getattr__(self, name: str):
+        try:
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            return getattr(self._path, name)
+
+    def read_text(self, encoding: str = ENCODING, errors: str = ERRORS) -> str:
         return self.read_bytes().decode(encoding, errors)
 
-    def write_text(self, text: str, encoding: str = None, errors: str = None) -> int:
+    def write_text(
+        self, text: str, encoding: str = ENCODING, errors: str = ERRORS
+    ) -> int:
         self.write_bytes(text.encode(encoding, errors))
 
     def read_bytes(self) -> bytes:
