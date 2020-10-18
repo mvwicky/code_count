@@ -5,6 +5,6 @@
         }
     ],
     "settings": {
-        "python_interpreter": "/Users/michael/.pyenv/versions/miniconda3-4.7.12/bin/python"
+        "python_interpreter": ".venv/bin/python"
     }
 }

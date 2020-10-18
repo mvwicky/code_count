@@ -27,6 +27,10 @@ class GzipCompression(AbstractCompressionFormat):
     def __init__(self, compresslevel: int = 9):
         self.compresslevel = compresslevel
 
+    @property
+    def name(self) -> str:
+        return type(self).__name__.replace("Compression", "")
+
     def compress(self, data: bytes) -> bytes:
         return gzip.compress(data, compresslevel=self.compresslevel)
 
@@ -35,6 +39,10 @@ class GzipCompression(AbstractCompressionFormat):
 
 
 class NoopCompression(AbstractCompressionFormat):
+    @property
+    def name(self) -> str:
+        return type(self).__name__.replace("Compression", "")
+
     def compress(self, data: bytes) -> bytes:
         return data
 

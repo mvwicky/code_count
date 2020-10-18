@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional, Type, Union
 
 import attr
+import click
 
 _PathTypes = Union[os.PathLike, str]
 
@@ -37,7 +38,7 @@ class LazyCache(object):
         return self._value
 
     def __truediv__(self, other: _PathTypes) -> Path:
-        if not isinstance(other, (os.PathLike, str)):
+        if not isinstance(other, str):
             return NotImplemented
         return self.location / other
 
@@ -54,3 +55,23 @@ def hash_path(p: Path, hasher: Type["hashlib._Hash"] = hashlib.md5) -> str:
 def true_with_prob(p: float) -> bool:
     x = random.uniform(0, 1)
     return x < p
+
+
+@attr.s(auto_attribs=True, slots=True)
+class Log(object):
+    _verbose: bool
+    prefix: str = attr.ib(default=">>>")
+
+    @classmethod
+    def create(cls, verbose: bool) -> "Log":
+        return cls(verbose)
+
+    def verbose(self, msg: str, **kwargs):
+        if self._verbose:
+            self.log(msg, **kwargs)
+
+    def log(self, msg: str, **kwargs):
+        click.secho(" ".join([self.prefix, msg]), **kwargs)
+
+    def __call__(self, msg: str, **kwargs):
+        self.log(msg, **kwargs)
